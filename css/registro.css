@@ -1,0 +1,145 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #fd7b02, #f8d07a);
+}
+
+
+.container {
+display: flex;
+justify-content: center;
+align-items: center;
+height: 100vh;
+}
+
+
+
+.card {
+background: #2b2b2b;
+padding: 30px 60px;
+border-radius: 15px;
+box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+text-align: center;
+width: 100%;
+max-width: 400px;
+}
+
+.card h1 {
+font-size: 2rem;
+color: #fff;
+margin-bottom: 10px;
+}
+
+.card p {
+font-size: 1rem;
+color: #bbb;
+margin-bottom: 20px;
+}
+
+.input-group {
+margin-bottom: 15px;
+text-align: left;
+}
+
+.input-group label {
+display: block;
+font-size: 0.9rem;
+color: #fff;
+margin-bottom: 5px;
+}
+
+.input-group input {
+width: 100%;
+padding: 10px;
+border: 1px solid #555;
+border-radius: 5px;
+background: #1c1c1c;
+color: #fff;
+font-size: 0.9rem;
+}
+
+.input-group input::placeholder {
+color: #888;
+}
+
+.input-group input:focus {
+outline: none;
+border-color: #f7931e;
+}
+
+
+button {
+    padding: 1.3em 3em;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2.5px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #ff7f32;
+    border: none;
+    border-radius: 45px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease 0s;
+    cursor: pointer;
+    outline: none;
+  }
+  
+  button:hover {
+    background-color: #e9820d;
+    box-shadow: 0px 15px 20px rgba(229, 150, 46, 0.4);
+    color: #fff;
+    transform: translateY(-7px);
+  }
+  
+  button:active {
+    transform: translateY(-1px);
+  }
+
+
+
+.redirect {
+margin-top: 15px;
+font-size: 0.9rem;
+color: #bbb;
+}
+
+.redireccion a {
+color: #f7931e;
+text-decoration: none;
+}
+
+.redireccion a:hover {
+text-decoration: underline;
+}
+
+.cabeza h1 {
+    color: #ff7f32;
+}
+
+/* Estilos para el select de facultades */
+.input-group select {
+  width: 106%;
+  padding: 10px;
+  border: 1px solid #555;
+  border-radius: 5px; /* Igual que los botones */
+  background:#1c1c1c; /* Color similar a los botones */
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+  
+}
+
+/* Cambia de color cuando el usuario pasa el mouse */
+
+
+/* Cambia el borde al hacer clic */
+.input-group select:focus {
+  outline: none;
+  border-color: #f7931e;
+}
+

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Perfil</title>
+    <link rel="stylesheet" href="/css/crearperfil.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+
+<body>
+    <div class="animate__animated animate__bounce"  id="contenedor">
+        <div id="tarjeta-registro">
+            <h1>Crear Perfil</h1>
+
+            <form id="formulario-registro">
+                <div class="grupo-entrada">
+                    <label for="foto-perfil">Foto de Perfil</label>
+                    <input type="file" id="foto-perfil" accept="image/*" required>
+                </div>
+
+                <div id="foto-perfil-container">
+                    <img id="vista-previa" src="" alt=" ">
+                </div>
+
+                <div class="grupo-entrada"> <br>
+                    <label for="nombre-usuario">Nombre de Usuario</label>
+                    <input type="text" id="nombre-usuario" placeholder="Ingresar tu nombre de usuario" required>
+                </div>
+
+                <button type="submit" id="boton-registrar">Registrar</button>
+                <div id="mensaje-error"></div>
+            </form>
+        </div>        
+    </div>
+
+    <script>
+        document.getElementById("formulario-registro").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const nombreUsuario = document.getElementById("nombre-usuario").value;
+            const fotoPerfilInput = document.getElementById("foto-perfil");
+
+            if (fotoPerfilInput.files.length === 0) {
+                alert("Selecciona una Foto de Perfil");
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function() {
+                const fotoPerfil = reader.result;
+
+                const img = new Image();
+                img.src = fotoPerfil;
+
+                img.onload = function() {
+                    if (img.width < 100 || img.height < 100) {
+                        document.getElementById("mensaje-error").textContent = "La foto de perfil es muy pequeña";
+                        return;
+                    }
+
+                    const usuario = {
+                        nombreUsuario,
+                        fotoPerfil
+                    };
+
+                    localStorage.setItem("usuario", JSON.stringify(usuario));
+
+                    alert("Perfil creado con éxito");
+                    window.location.href = "login.html";
+                };
+            };
+
+            reader.readAsDataURL(fotoPerfilInput.files[0]);
+        });
+
+        // Vista previa de la imagen
+        const fotoPerfilInput = document.getElementById("foto-perfil");
+        const vistaPrevia = document.getElementById("vista-previa");
+
+        fotoPerfilInput.addEventListener("change", function() {
+            if (fotoPerfilInput.files && fotoPerfilInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    vistaPrevia.src = e.target.result;
+                };
+                reader.readAsDataURL(fotoPerfilInput.files[0]);
+            }
+        });
+    </script>
+</body>
+
+</html>

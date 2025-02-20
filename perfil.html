@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
+    <link rel="stylesheet" href="/css/perfil.css" />
+  </head>
+  
+  <body class="bg-black text-white">
+    <header class="navbar">
+        <div class="logo">
+            <img src="/Images/logo.png" alt="Logo Universidad" />
+            <h1>Club</h1>
+        </div>
+        <nav>
+            <ul class="menu">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="explorar.html">Explorar</a></li>
+                <li><a href="perfil.html" class="active">Perfil</a></li>
+                <li><a href="#" id="menu-toggle">≡</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="max-w-2xl mx-auto py-8">
+
+      <!-- P E R F I L-->
+
+        <!-- foto de perfil  -->
+      <div class="flex items-center justify-between px-4">
+        <div class="flex items-center space-x-4">
+          <div class="w-24 h-24 rounded-full overflow-hidden border-2 border-gray-600">
+            <img
+              id="profile-picture"
+              alt=""
+              class="w-full h-full object-cover"
+              src=""/>
+          </div>
+
+          <!-- username y extras -->
+
+          <div>
+            <h1 id="username" class="text-xl font-semibold"></h1>
+            <p id="facultad" class="text-gray-400"></p>
+            <div class="flex space-x-4 mt-2">
+              <div>
+                <span class="font-semibold">2000</span> seguidores
+              </div>
+              <div>
+                <span class="font-semibold">50</span> seguidos
+              </div>
+
+              <!-- boton de añadir post -->                           
+
+              <button
+                id="add-post"
+                class="bg-gray-800 text-white px-3 py-1 rounded-md text-lg font-poppins"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="flex space-x-4">
+          <a href="editarperfil.html" class="bg-orange-500 text-white px-4 py-1 rounded-md font-poppins">
+            Editar perfil
+          </a>
+          
+
+          <i class="fas fa-cog text-xl"></i>
+          
+        </div>
+      </div>
+
+      <!-- D I V I D I R -->
+
+      <div class="border-t border-gray-600 my-4"></div>
+      
+      <!-- S E C C I Ó N  P O S T -->
+
+      <div class="px-4">
+        <h2 class="text-lg font-semibold mb-4">Publicaciones</h2>
+        <div id="posts-grid" class="grid grid-cols-3 gap-4"></div>
+      </div>
+    </div>
+
+    <!-- M O D A L -->
+
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h2 class="text-lg font-semibold text-white mb-4">
+          Añadir nueva publicación
+        </h2>
+        <input
+          id="post-file"
+          type="file"
+          accept="image/*,video/*"
+          class="mb-4 block w-full text-sm text-white"
+        />
+        <button
+          id="upload-post"
+          class="bg-gray-800 text-white px-4 py-1 rounded-md"
+        >
+          Subir
+        </button>
+        <button
+          id="close-modal"
+          class="bg-red-500 text-white px-4 py-1 rounded-md mt-2"
+        >
+          Cerrar
+        </button>
+        <p id="error-message" class="text-red-500 mt-2"></p>
+      </div>
+    </div>
+
+    <!-- A M P L I A R  P O S T -->
+
+    <div id="view-modal" class="modal">
+      <div class="modal-content">
+        <img id="view-image" class="w-full h-auto hidden" />
+        <video
+          id="view-video"
+          class="w-full h-auto hidden"
+          controls
+        ></video>
+        <button
+          id="close-view-modal"
+          class="bg-red-500 text-white px-4 py-1 rounded-md mt-2"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+
+    <!-- M E N Ú - B A R R A  L A T E R A L -->
+
+    <div id="dropdown-menu" class="hidden absolute top-16 right-8 bg-gray-800 text-white rounded-md shadow-md p-2">
+      <ul>
+        <li>
+          <a href="login.html" class="block px-4 py-2">Cerrar sesión</a>
+        </li>
+      </ul>
+    </div>
+
+
+    <!-- scripts -->
+
+    <script>
+      // == menú desplegable al hacer clic en "≡" == 
+      document.getElementById("menu-toggle").onclick = () => {
+        const menu = document.getElementById("dropdown-menu");
+        menu.classList.toggle("hidden");
+      };
+    
+      // == publicaciones en ls == 
+      function cargarPublicaciones() {
+        const publicaciones = JSON.parse(localStorage.getItem("publicaciones")) || [];
+        const postsGrid = document.getElementById("posts-grid");
+    
+        // == Limpia el grid ==
+        postsGrid.innerHTML = "";
+    
+        publicaciones.forEach((publicacion) => {
+            if (!publicacion.url) return; // Ignorar si no hay URL válida
+    
+            const postElement = document.createElement("div");
+            postElement.className = "relative bg-gray-800 rounded-lg overflow-hidden";
+    
+            if (publicacion.tipo === "imagen") {
+                const img = document.createElement("img");
+                img.src = publicacion.url;
+                img.alt = "Publicación";
+                img.className = "w-full h-full object-cover cursor-pointer";
+                img.onclick = () => ampliarPublicacion(publicacion);
+                postElement.appendChild(img);
+            } else if (publicacion.tipo === "video") {
+                const video = document.createElement("video");
+                video.src = publicacion.url;
+                video.controls = true;
+                video.className = "w-full h-full object-cover cursor-pointer";
+                video.onclick = () => ampliarPublicacion(publicacion);
+                postElement.appendChild(video);
+            }
+    
+            postsGrid.appendChild(postElement);
+        });
+      }
+    
+      // == modal == 
+      const modal = document.getElementById("modal");
+      const addPostButton = document.getElementById("add-post");
+      const closeModalButton = document.getElementById("close-modal");
+      const postFileInput = document.getElementById("post-file");
+      const uploadPostButton = document.getElementById("upload-post");
+    
+      addPostButton.onclick = () => {
+        modal.style.display = "flex";
+      };
+    
+      closeModalButton.onclick = () => {
+        modal.style.display = "none";
+      };
+    
+      // == nuevo post == 
+      uploadPostButton.onclick = () => {
+        const file = postFileInput.files[0];
+        if (!file) {
+            document.getElementById("error-message").textContent = "Selecciona un archivo";
+            return;
+        }
+    
+        const reader = new FileReader();
+        reader.readAsDataURL(file); // Convertir a Base64
+        reader.onload = () => {
+            const url = reader.result; // URL en Base64
+            const tipo = file.type.startsWith("image") ? "imagen" : "video";
+    
+            // Guardar en localStorage
+            const publicaciones = JSON.parse(localStorage.getItem("publicaciones")) || [];
+            publicaciones.push({ url, tipo });
+            localStorage.setItem("publicaciones", JSON.stringify(publicaciones));
+    
+            // Cargar las publicaciones y cerrar modal
+            cargarPublicaciones();
+            modal.style.display = "none";
+            postFileInput.value = "";
+            document.getElementById("error-message").textContent = "";
+        };
+      };
+    
+      // == ampliar post == 
+      function ampliarPublicacion(publicacion) {
+        const viewModal = document.getElementById("view-modal");
+        const viewImage = document.getElementById("view-image");
+        const viewVideo = document.getElementById("view-video");
+    
+        if (publicacion.tipo === "imagen") {
+          viewImage.src = publicacion.url;
+          viewImage.style.display = "block";
+          viewVideo.style.display = "none";
+        } else if (publicacion.tipo === "video") {
+          viewVideo.src = publicacion.url;
+          viewVideo.style.display = "block";
+          viewImage.style.display = "none";
+        }
+    
+        viewModal.style.display = "flex";
+      }
+    
+      // == cerrar modal == 
+      const closeViewModalButton = document.getElementById("close-view-modal");
+      closeViewModalButton.onclick = () => {
+        document.getElementById("view-modal").style.display = "none";
+      };
+    
+      // == datos al iniciar sesion == 
+      window.onload = () => {
+        const usuario = JSON.parse(localStorage.getItem("usuario"));
+        const facultad = localStorage.getItem("facultad"); // Obtener la facultad
+    
+        if (usuario) {
+            document.getElementById("profile-picture").src = usuario.fotoPerfil;
+            document.getElementById("username").textContent = usuario.nombreUsuario;
+        }
+    
+        if (facultad) {
+            document.getElementById("facultad").textContent = facultad;
+        }
+    
+        cargarPublicaciones(); // Cargar las publicaciones
+    
+        // Recuperar fondo guardado
+        const savedBg = localStorage.getItem("backgroundUrl");
+        if (savedBg) {
+            document.body.style.backgroundImage = `url(${savedBg})`;
+        }
+      };
+    </script>
+  </body>
+</html>

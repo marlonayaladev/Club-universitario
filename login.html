@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club - Login</title>
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+<body>
+    <div class="animate__animated animate__bounce  login-container">
+        <div class="login-card">
+            <div class="animate__animated animate__bounce logo">
+                <img src="/images/logo.png" alt="club logo" />
+            </div>
+            <h1 class="animate__animated animate__bounce">Bienvenido al Club</h1>
+            <p>Inicia sesión para acceder a eventos exclusivos</p>
+
+            <form id="login-form">
+                <div class="input-group">
+                    <label for="email">Correo Universitario</label>
+                    <input type="email" id="email" placeholder="usuario@universidad.edu.pe" required/>
+                </div>
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Ingrese su contraseña" required />
+                </div>
+                <br>
+                <button type="submit" class="btn">Iniciar Sesión</button>
+                
+                <div class="register-link">
+                    <p>
+                        ¿No tienes cuenta? <a href="registro.html">Regístrate Aquí</a>
+                    </p>
+                </div>
+            </form>
+            <p id="mensaje-error" style="color: red;"></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("login-form").addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const correoIngresado = document.getElementById("email").value;
+    const passwordIngresado = document.getElementById("password").value;
+
+    const correoGuardado = localStorage.getItem("correo");
+    const passwordGuardado = localStorage.getItem("password");
+    const facultadGuardada = localStorage.getItem("facultad");
+    const usuarioGuardado = JSON.parse(localStorage.getItem("usuario"));
+
+    if (correoIngresado === correoGuardado && passwordIngresado === passwordGuardado) {
+        alert("Inicio de sesión exitoso");
+
+        // Guarda el usuario actual con todos sus datos
+        const usuarioActual = {
+            nombreUsuario: usuarioGuardado?.nombreUsuario || "Usuario",
+            fotoPerfil: usuarioGuardado?.fotoPerfil || "default-avatar.png",
+            correo: correoGuardado,
+            facultad: facultadGuardada
+        };
+
+        localStorage.setItem("usuarioActual", JSON.stringify(usuarioActual));
+
+        window.location.href = "index.html"; // Redirige a la página principal
+    } else {
+        alert("Correo o contraseña incorrectos");
+    }
+});
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Club - Registro</title>
+    <link rel="stylesheet" href="/css/registro.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="cabeza card animate__animated animate__bounce">
+            <h1 class="animate__animated animate__bounce">Regístrate</h1>
+            <p>Únete al club</p>
+
+            <form id="registro">
+                <div class="input-group">
+                    <label for="email">Correo Universitario</label>
+                    <input type="email" id="email" placeholder="Correo@universidad.edu.pe" required/> 
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Crea una contraseña" required/>
+                </div>
+
+                <div class="input-group">
+                    <label for="confirmar-contraseña">Confirmar Contraseña</label>
+                    <input type="password" id="confirmar-contraseña" placeholder="Repite la contraseña" required/>
+                </div>
+
+                <div class="input-group">
+                    <label for="facultad">Facultad</label>
+                    <select id="facultad" required>
+                        <option value="" disabled selected></option>
+                        <option value="Ingeniería">Ingeniería</option>
+                        <option value="Medicina">Medicina</option>
+                        <option value="Derecho">Derecho</option>
+                        <option value="Administración">Administración</option>
+                        <option value="Arquitectura">Arquitectura</option>
+                        <option value="Economía">Economía</option>
+                        <option value="Psicología">Psicología</option>
+                        <option value="Ciencias de la Comunicación">Ciencias de la Comunicación</option>
+                        <option value="Educación">Educación</option>
+                        <option value="Ciencias Sociales">Ciencias Sociales</option>
+                        <option value="Turismo y Hotelería">Turismo y Hotelería</option>
+                        <option value="Arte y Diseño">Arte y Diseño</option>
+                        <option value="Biología">Biología</option>
+                    </select>
+                </div>
+
+                <br>
+                <button type="submit" class="btn">Registrarse</button><br>
+                <p class="redireccion"> <br>
+                    ¿Ya tienes una cuenta?
+                    <a href="login.html">Inicia sesión aquí</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- scripts -->
+
+    <script>
+        document.getElementById("registro").addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            const correo = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const confirmarContraseña = document.getElementById("confirmar-contraseña").value;
+            const facultad = document.getElementById("facultad").value;
+
+            if (password !== confirmarContraseña) {
+                alert("Las contraseñas no son iguales");
+                return;
+            }
+
+            try {
+                // Guardar en localStorage
+                localStorage.setItem("correo", correo);
+                localStorage.setItem("password", password);
+                localStorage.setItem("facultad", facultad);
+
+                alert("Registro exitoso");
+                window.location.href = "crearperfil.html";
+            } catch (error) {
+                alert("Error al guardar los datos");
+            }
+        });
+    </script>
+</body>
+</html>
