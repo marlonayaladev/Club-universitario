@@ -259,6 +259,10 @@
     
       // == datos al iniciar sesion == 
       window.onload = () => {
+        const usuarioActual = JSON.parse(localStorage.getItem("usuarioActual"));
+        if (!usuarioActual) {
+            window.location.href = "login.html";
+        }
         const usuario = JSON.parse(localStorage.getItem("usuario"));
         const facultad = localStorage.getItem("facultad"); // Obtener la facultad
     

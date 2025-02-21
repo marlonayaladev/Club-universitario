@@ -42,103 +42,111 @@
     <!-- scripts  -->
 
     <script>
-        //datos falsos
-        const usuariosEjemplo = [
-            { id: 1, nombreUsuario: "Marlon", tipo: "Ingeniería", fotoPerfil: "/images/avatar1.jpg" },
-            { id: 2, nombreUsuario: "Nicol", tipo: "Administración", fotoPerfil: "/images/avatar2.jpg" },
-            { id: 3, nombreUsuario: "Rufo", tipo: "Biología", fotoPerfil: "/Images/avatar3.jpg" },
-            { id: 4, nombreUsuario: "Pancho", tipo: "Medicina", fotoPerfil: "/Images/avatar4.jpg" },
-            { id: 5, nombreUsuario: "Anonimo", tipo: "Ingeniería", fotoPerfil: "/Images/avatar5.jpg" }
-        ];
+        // Redirect to login if no user is logged in
+        window.onload = () => {
+            const usuarioActual = JSON.parse(localStorage.getItem("usuarioActual"));
+            if (!usuarioActual) {
+                window.location.href = "login.html";
+            }
 
-        const gruposEjemplo = [
-            { id: 1, nombre: "Club de Programación", descripcion: "Para amantes del código", fotoPerfil: "/Images/grupo1.jpg" },
-            { id: 2, nombre: "Grupo de Estudio Matemáticas", descripcion: "Preparación para exámenes", fotoPerfil: "/Images/grupo2.jpg" },
-            { id: 3, nombre: "Asociación de Estudiantes", descripcion: "Representación estudiantil", fotoPerfil: "/Images/grupo3.jpg" },
-            { id: 4, nombre: "Club de Debate", descripcion: "Mejora tus habilidades de oratoria", fotoPerfil: "/Images/grupo4.jpg" }
-        ];
+            //datos falsos
+            const usuariosEjemplo = [
+                { id: 1, nombreUsuario: "Marlon", tipo: "Ingeniería", fotoPerfil: "/images/avatar1.jpg" },
+                { id: 2, nombreUsuario: "Nicol", tipo: "Administración", fotoPerfil: "/images/avatar2.jpg" },
+                { id: 3, nombreUsuario: "Rufo", tipo: "Biología", fotoPerfil: "/Images/avatar3.jpg" },
+                { id: 4, nombreUsuario: "Pancho", tipo: "Medicina", fotoPerfil: "/Images/avatar4.jpg" },
+                { id: 5, nombreUsuario: "Anonimo", tipo: "Ingeniería", fotoPerfil: "/Images/avatar5.jpg" }
+            ];
 
-        document.addEventListener('DOMContentLoaded', function() {
-            const searchInput = document.getElementById('search-input');
-            const searchResults = document.getElementById('search-results');
+            const gruposEjemplo = [
+                { id: 1, nombre: "Club de Programación", descripcion: "Para amantes del código", fotoPerfil: "/Images/grupo1.jpg" },
+                { id: 2, nombre: "Grupo de Estudio Matemáticas", descripcion: "Preparación para exámenes", fotoPerfil: "/Images/grupo2.jpg" },
+                { id: 3, nombre: "Asociación de Estudiantes", descripcion: "Representación estudiantil", fotoPerfil: "/Images/grupo3.jpg" },
+                { id: 4, nombre: "Club de Debate", descripcion: "Mejora tus habilidades de oratoria", fotoPerfil: "/Images/grupo4.jpg" }
+            ];
 
-            searchInput.addEventListener('input', function() {
-                const query = this.value.trim().toLowerCase();
-                
-                if (query.length < 2) {
-                    searchResults.innerHTML = '';
-                    return;
-                }
+            document.addEventListener('DOMContentLoaded', function() {
+                const searchInput = document.getElementById('search-input');
+                const searchResults = document.getElementById('search-results');
 
-                // Filtrar usuarios
-                const usuariosFiltrados = usuariosEjemplo.filter(usuario => 
-                    usuario.nombreUsuario.toLowerCase().includes(query)
-                );
+                searchInput.addEventListener('input', function() {
+                    const query = this.value.trim().toLowerCase();
+                    
+                    if (query.length < 2) {
+                        searchResults.innerHTML = '';
+                        return;
+                    }
 
-                // Filtrar grupos
-                const gruposFiltrados = gruposEjemplo.filter(grupo => 
-                    grupo.nombre.toLowerCase().includes(query) || 
-                    grupo.descripcion.toLowerCase().includes(query)
-                );
+                    // Filtrar usuarios
+                    const usuariosFiltrados = usuariosEjemplo.filter(usuario => 
+                        usuario.nombreUsuario.toLowerCase().includes(query)
+                    );
 
-                // Construir HTML de resultados
-                let html = '';
+                    // Filtrar grupos
+                    const gruposFiltrados = gruposEjemplo.filter(grupo => 
+                        grupo.nombre.toLowerCase().includes(query) || 
+                        grupo.descripcion.toLowerCase().includes(query)
+                    );
 
-                // Sección de usuarios
-                html += `<div class="result-category">
-                            <h3 class="category-title">Usuarios (${usuariosFiltrados.length})</h3>`;
-                
-                if (usuariosFiltrados.length > 0) {
-                    usuariosFiltrados.forEach(usuario => {
-                        const href = usuario.nombreUsuario === "Anonimo" ? "https://www.google.com" : `/perfil.html?id=${usuario.id}`;
-                        html += `
-                            <a href="${href}" class="result-item">
-                                <img src="${usuario.fotoPerfil}" alt="${usuario.nombreUsuario}" class="result-avatar">
-                                <div class="result-info">
-                                    <div class="result-name">@${usuario.nombreUsuario}</div>
-                                    <div class="result-description">${usuario.tipo}</div>
-                                </div>
-                            </a>
-                        `;
-                    });
-                } else {
-                    html += `<div class="no-results">No se encontraron usuarios</div>`;
-                }
-                html += `</div>`;
+                    // Construir HTML de resultados
+                    let html = '';
 
-                // Sección de grupos
-                html += `<div class="result-category">
-                            <h3 class="category-title">Grupos (${gruposFiltrados.length})</h3>`;
-                
-                if (gruposFiltrados.length > 0) {
-                    gruposFiltrados.forEach(grupo => {
-                        html += `
-                            <a href="/grupo.html?id=${grupo.id}" class="result-item">
-                                <img src="${grupo.fotoPerfil}" alt="${grupo.nombre}" class="result-avatar">
-                                <div class="result-info">
-                                    <div class="result-name">${grupo.nombre}</div>
-                                    <div class="result-description">${grupo.descripcion}</div>
-                                </div>
-                            </a>
-                        `;
-                    });
-                } else {
-                    html += `<div class="no-results">No se encontraron grupos</div>`;
-                }
-                html += `</div>`;
+                    // Sección de usuarios
+                    html += `<div class="result-category">
+                                <h3 class="category-title">Usuarios (${usuariosFiltrados.length})</h3>`;
+                    
+                    if (usuariosFiltrados.length > 0) {
+                        usuariosFiltrados.forEach(usuario => {
+                            const href = usuario.nombreUsuario === "Anonimo" ? "https://www.google.com" : `/perfil.html?id=${usuario.id}`;
+                            html += `
+                                <a href="${href}" class="result-item">
+                                    <img src="${usuario.fotoPerfil}" alt="${usuario.nombreUsuario}" class="result-avatar">
+                                    <div class="result-info">
+                                        <div class="result-name">@${usuario.nombreUsuario}</div>
+                                        <div class="result-description">${usuario.tipo}</div>
+                                    </div>
+                                </a>
+                            `;
+                        });
+                    } else {
+                        html += `<div class="no-results">No se encontraron usuarios</div>`;
+                    }
+                    html += `</div>`;
 
-                // Insertar resultados en el DOM
-                searchResults.innerHTML = html;
+                    // Sección de grupos
+                    html += `<div class="result-category">
+                                <h3 class="category-title">Grupos (${gruposFiltrados.length})</h3>`;
+                    
+                    if (gruposFiltrados.length > 0) {
+                        gruposFiltrados.forEach(grupo => {
+                            html += `
+                                <a href="/grupo.html?id=${grupo.id}" class="result-item">
+                                    <img src="${grupo.fotoPerfil}" alt="${grupo.nombre}" class="result-avatar">
+                                    <div class="result-info">
+                                        <div class="result-name">${grupo.nombre}</div>
+                                        <div class="result-description">${grupo.descripcion}</div>
+                                    </div>
+                                </a>
+                            `;
+                        });
+                    } else {
+                        html += `<div class="no-results">No se encontraron grupos</div>`;
+                    }
+                    html += `</div>`;
+
+                    // Insertar resultados en el DOM
+                    searchResults.innerHTML = html;
+                });
+
+                // Limpiar resultados al hacer clic fuera del campo de búsqueda
+                document.addEventListener('click', function(event) {
+                    if (event.target !== searchInput && !searchResults.contains(event.target)) {
+                        searchResults.innerHTML = '';
+                        searchInput.value = '';
+                    }
+                });
             });
-
-            // Limpiar resultados al hacer clic fuera del campo de búsqueda
-            document.addEventListener('click', function(event) {
-                if (event.target !== searchInput && !searchResults.contains(event.target)) {
-                    searchResults.innerHTML = '';
-                    searchInput.value = '';
-                }
-            });
-        });
+        };
     </script>
 </body>
 </html>
