@@ -65,6 +65,15 @@
     <!-- SCRIPTS TRASLADAR A JS  -->
 
     <script>
+        // redireccionar a login si el usuario no está logueado
+        window.onload = () => {
+            const usuarioActual = JSON.parse(localStorage.getItem("usuarioActual"));
+            if (!usuarioActual) {
+                window.location.href = "login.html";
+            }
+            renderizarPublicaciones();
+        };
+
         document.getElementById("menu-toggle").onclick = () => {
             document.getElementById("dropdown-menu").classList.toggle("hidden");
         };
