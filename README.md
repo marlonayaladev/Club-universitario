@@ -56,6 +56,4 @@ npm install
 Este proyecto está bajo la licencia [MIT](https://choosealicense.com/licenses/mit/)
 
 
-## Feedback
 
-proximamente
